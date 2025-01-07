@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩工具 - 简单易用的在线图片压缩</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div class="login-container" id="loginSection">
+        <div class="login-box">
+            <h2>访问验证</h2>
+            <p class="login-subtitle">请输入访问密码</p>
+            <div class="password-input">
+                <input type="password" id="passwordInput" placeholder="请输入密码">
+                <button id="loginBtn">验证</button>
+            </div>
+            <p id="loginError" class="login-error"></p>
+        </div>
+    </div>
+
+    <!-- 主应用界面 -->
+    <div id="appContent" style="display: none;">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <h1>图片压缩工具</h1>
+            <p class="subtitle">简单、快速、高效的图片压缩</p>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-container">
+            <!-- 上传区域 -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-area" id="dropZone">
+                    <img src="assets/icons/upload.svg" alt="上传图标" class="upload-icon">
+                    <p>拖拽图片到这里或点击上传</p>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+            </section>
+
+            <!-- 图片预览和压缩控制区域 -->
+            <section class="preview-section" id="previewSection" style="display: none;">
+                <div class="preview-container">
+                    <!-- 原图预览 -->
+                    <div class="preview-box">
+                        <h3>原始图片</h3>
+                        <div class="image-container">
+                            <img id="originalImage" alt="原始图片">
+                        </div>
+                        <div class="image-info">
+                            <p>文件大小：<span id="originalSize">0 KB</span></p>
+                        </div>
+                    </div>
+
+                    <!-- 压缩后预览 -->
+                    <div class="preview-box">
+                        <h3>压缩后</h3>
+                        <div class="image-container">
+                            <img id="compressedImage" alt="压缩后图片">
+                        </div>
+                        <div class="image-info">
+                            <p>文件大小：<span id="compressedSize">0 KB</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 压缩控制区域 -->
+                <div class="control-panel">
+                    <div class="quality-control">
+                        <label for="qualitySlider">压缩质量：<span id="qualityValue">80%</span></label>
+                        <input type="range" id="qualitySlider" min="1" max="100" value="80">
+                    </div>
+                    <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
+                    <button id="resetBtn" class="reset-btn">重新上传</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 2024 图片压缩工具 - 所有权利保留</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 
