@@ -15,23 +15,26 @@ if (isLoggedIn) {
 }
 
 // 密码验证
-loginBtn.addEventListener('click', checkPassword);
-passwordInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        checkPassword();
-    }
-});
-
-function checkPassword() {
-    const password = passwordInput.value;
-    if (password === CORRECT_PASSWORD) {
-        sessionStorage.setItem('isLoggedIn', 'true');
-        showApp();
+loginBtn.addEventListener('click', () => {
+    const password = passwordInput.value.trim();
+    if (password === 'xiangjie') {
+        loginSection.style.display = 'none';
+        appContent.style.display = 'block';
+        // 清除密码输入
+        passwordInput.value = '';
+        loginError.textContent = '';
     } else {
         loginError.textContent = '密码错误，请重试';
         passwordInput.value = '';
     }
-}
+});
+
+// 回车键验证
+passwordInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        loginBtn.click();
+    }
+});
 
 function showApp() {
     loginSection.style.display = 'none';
@@ -183,4 +186,42 @@ resetBtn.addEventListener('click', () => {
     compressedSize.textContent = '0 KB';
     qualitySlider.value = 80;
     qualityValue.textContent = '80%';
+});
+
+// 导航功能
+document.addEventListener('DOMContentLoaded', () => {
+    const compressBtn = document.getElementById('compressBtn');
+    const resizeBtn = document.getElementById('resizeBtn');
+    const minesweeperBtn = document.getElementById('minesweeperBtn');
+    const compressSection = document.getElementById('compressSection');
+    const resizeSection = document.getElementById('resizeSection');
+    const minesweeperSection = document.getElementById('minesweeperSection');
+
+    // 导航切换函数
+    function switchSection(activeBtn, activeSection) {
+        // 重置所有按钮状态
+        [compressBtn, resizeBtn, minesweeperBtn].forEach(btn => {
+            btn.classList.remove('active');
+        });
+        // 重置所有区域显示状态
+        [compressSection, resizeSection, minesweeperSection].forEach(section => {
+            section.style.display = 'none';
+        });
+        // 激活当前按钮和区域
+        activeBtn.classList.add('active');
+        activeSection.style.display = 'block';
+    }
+
+    // 添加导航按钮事件监听
+    compressBtn.addEventListener('click', () => {
+        switchSection(compressBtn, compressSection);
+    });
+
+    resizeBtn.addEventListener('click', () => {
+        switchSection(resizeBtn, resizeSection);
+    });
+
+    minesweeperBtn.addEventListener('click', () => {
+        switchSection(minesweeperBtn, minesweeperSection);
+    });
 }); 

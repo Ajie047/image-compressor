@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>图片压缩工具 - 简单易用的在线图片压缩</title>
     <link rel="stylesheet" href="css/style.css">
+    <!-- 添加 JSZip 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
     <!-- 登录界面 -->
@@ -28,6 +30,7 @@
             <p class="subtitle">简单、快速、高效的图片压缩</p>
             <nav class="nav-menu">
                 <button id="compressBtn" class="nav-btn active">图片压缩</button>
+                <button id="resizeBtn" class="nav-btn">尺寸调整</button>
                 <button id="minesweeperBtn" class="nav-btn">扫雷游戏</button>
             </nav>
         </header>
@@ -83,6 +86,34 @@
                 </section>
             </div>
 
+            <!-- 图片尺寸调整部分 -->
+            <div id="resizeSection" style="display: none;">
+                <div class="resize-container">
+                    <div class="upload-area" id="resizeDropZone">
+                        <img src="assets/icons/upload.svg" alt="上传图标" class="upload-icon">
+                        <p>拖拽图片到这里或点击上传（支持多选）</p>
+                        <input type="file" id="resizeFileInput" accept="image/*" multiple>
+                    </div>
+                    
+                    <div class="resize-preview" id="resizePreview" style="display: none;">
+                        <div class="resize-info">
+                            <h3>批量调整图片尺寸</h3>
+                            <p>目标尺寸：800 x 800 像素</p>
+                            <p>已选择图片：<span id="selectedCount">0</span> 张</p>
+                        </div>
+                        
+                        <div class="resize-controls">
+                            <button id="startResizeBtn" class="primary-btn">开始调整</button>
+                            <button id="clearResizeBtn" class="secondary-btn">清空列表</button>
+                        </div>
+                        
+                        <div class="resize-list" id="resizeList">
+                            <!-- 图片列表将由 JavaScript 动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- 扫雷游戏部分 -->
             <div id="minesweeperSection" style="display: none;">
                 <div class="game-container">
@@ -108,5 +139,6 @@
 
     <script src="js/main.js"></script>
     <script src="js/minesweeper.js"></script>
+    <script src="js/resize.js"></script>
 </body>
 </html> 
