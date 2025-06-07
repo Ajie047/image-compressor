@@ -601,4 +601,246 @@ button {
 
 .download-icon {
     font-size: 1.2rem;
+}
+
+/* 图片编辑器样式 */
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.editor-workspace {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .editor-workspace {
+        flex-direction: row;
+    }
+}
+
+.editor-canvas-container {
+    flex: 1;
+    min-height: 400px;
+    border: 1px solid #e0e0e0;
+    background-color: #f5f5f7;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#editorCanvas {
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.editor-controls {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .editor-controls {
+        width: 300px;
+    }
+}
+
+.control-group {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+.text-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#textInput {
+    width: 100%;
+    height: 80px;
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.font-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-item label {
+    min-width: 60px;
+}
+
+.control-item select,
+.control-item input[type="number"] {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.style-btn {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.style-btn.active {
+    background-color: #0071e3;
+    color: white;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.text-areas-list {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+#textAreaItems {
+    margin-top: 10px;
+}
+
+.text-area-item {
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-area-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.text-area-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.text-area-actions button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #86868b;
+}
+
+.text-area-actions button:hover {
+    color: #0071e3;
+}
+
+.draggable-text {
+    position: absolute;
+    padding: 0;
+    cursor: move;
+    border: 1px dashed transparent;
+    user-select: none;
+    display: inline-block;
+    font-size: 24px;
+}
+
+.draggable-text.selected {
+    border-color: #0071e3;
+}
+
+.resize-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #0071e3;
+    border-radius: 50%;
+    bottom: -5px;
+    right: -5px;
+    cursor: nwse-resize;
+    z-index: 10;
+}
+
+.eyedropper-icon {
+    display: inline-block;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.canvas-color-picker {
+    cursor: crosshair !important;
+}
+
+/* 编辑模式样式 */
+.edit-mode-active #addTextBtn {
+    display: none;
+}
+
+.edit-mode-active #updateTextBtn {
+    display: block;
+}
+
+#updateTextBtn {
+    display: none;
+    background-color: #34c759;
+    color: white;
+}
+
+#cancelEditBtn {
+    display: none;
+    background-color: #ff3b30;
+    color: white;
+}
+
+.edit-mode-active #cancelEditBtn {
+    display: block;
+}
+
+/* 编辑提示消息 */
+.editor-message {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    z-index: 100;
+    pointer-events: none;
+    display: none;
 } 
