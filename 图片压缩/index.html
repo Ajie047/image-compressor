@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩工具 - 简单易用的在线图片压缩</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 添加 JSZip 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div class="login-container" id="loginSection">
+        <div class="login-box">
+            <h2>访问验证</h2>
+            <p class="login-subtitle">请输入访问密码</p>
+            <div class="password-input">
+                <input type="password" id="passwordInput" placeholder="请输入密码">
+                <button id="loginBtn">验证</button>
+            </div>
+            <p id="loginError" class="login-error"></p>
+        </div>
+    </div>
+
+    <!-- 主应用界面 -->
+    <div id="appContent" style="display: none;">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <h1>图片压缩工具</h1>
+            <p class="subtitle">简单、快速、高效的图片压缩</p>
+            <nav class="nav-menu">
+                <button id="compressBtn" class="nav-btn active">图片压缩</button>
+                <button id="resizeBtn" class="nav-btn">尺寸调整</button>
+                <button id="imageEditorBtn" class="nav-btn">图片编辑</button>
+                <button id="minesweeperBtn" class="nav-btn">扫雷游戏</button>
+            </nav>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="main-container">
+            <!-- 图片压缩部分 -->
+            <div id="compressSection">
+                <!-- 上传区域 -->
+                <section class="upload-section" id="uploadSection">
+                    <div class="upload-area" id="dropZone">
+                        <img src="assets/icons/upload.svg" alt="上传图标" class="upload-icon">
+                        <p>拖拽图片到这里或点击上传</p>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                    </div>
+                </section>
+
+                <!-- 图片预览和压缩控制区域 -->
+                <section class="preview-section" id="previewSection" style="display: none;">
+                    <div class="preview-container">
+                        <!-- 原图预览 -->
+                        <div class="preview-box">
+                            <h3>原始图片</h3>
+                            <div class="image-container">
+                                <img id="originalImage" alt="原始图片">
+                            </div>
+                            <div class="image-info">
+                                <p>文件大小：<span id="originalSize">0 KB</span></p>
+                            </div>
+                        </div>
+
+                        <!-- 压缩后预览 -->
+                        <div class="preview-box">
+                            <h3>压缩后</h3>
+                            <div class="image-container">
+                                <img id="compressedImage" alt="压缩后图片">
+                            </div>
+                            <div class="image-info">
+                                <p>文件大小：<span id="compressedSize">0 KB</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 压缩控制区域 -->
+                    <div class="control-panel">
+                        <div class="quality-control">
+                            <label for="qualitySlider">压缩质量：<span id="qualityValue">80%</span></label>
+                            <input type="range" id="qualitySlider" min="1" max="100" value="80">
+                        </div>
+                        <button id="downloadBtn" class="download-btn">下载压缩后的图片</button>
+                        <button id="resetBtn" class="reset-btn">重新上传</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 图片尺寸调整部分 -->
+            <div id="resizeSection" style="display: none;">
+                <div class="resize-container">
+                    <div class="upload-area" id="resizeDropZone">
+                        <img src="assets/icons/upload.svg" alt="上传图标" class="upload-icon">
+                        <p>拖拽图片到这里或点击上传（支持多选）</p>
+                        <input type="file" id="resizeFileInput" accept="image/*" multiple>
+                    </div>
+                    
+                    <div class="resize-preview" id="resizePreview" style="display: none;">
+                        <div class="resize-info">
+                            <h3>批量调整图片尺寸</h3>
+                            <p>目标尺寸：800 x 800 像素</p>
+                            <p>已选择图片：<span id="selectedCount">0</span> 张</p>
+                        </div>
+                        
+                        <div class="resize-controls">
+                            <button id="startResizeBtn" class="primary-btn">开始调整</button>
+                            <button id="clearResizeBtn" class="secondary-btn">清空列表</button>
+                        </div>
+                        
+                        <div class="resize-list" id="resizeList">
+                            <!-- 图片列表将由 JavaScript 动态生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图片编辑部分 -->
+            <div id="imageEditorSection" style="display: none;">
+                <div class="editor-container">
+                    <div class="upload-area" id="editorDropZone">
+                        <img src="assets/icons/upload.svg" alt="上传图标" class="upload-icon">
+                        <p>拖拽图片模板到这里或点击上传</p>
+                        <input type="file" id="editorFileInput" accept="image/*" hidden>
+                    </div>
+                    
+                    <div class="editor-workspace" id="editorWorkspace" style="display: none;">
+                        <div class="editor-canvas-container">
+                            <canvas id="editorCanvas"></canvas>
+                        </div>
+                        
+                        <div class="editor-controls">
+                            <div class="control-group">
+                                <h3>文本编辑</h3>
+                                <div class="text-controls">
+                                    <textarea id="textInput" placeholder="请输入文字内容"></textarea>
+                                    
+                                    <div class="font-controls">
+                                        <div class="control-item">
+                                            <label for="fontFamily">字体：</label>
+                                            <select id="fontFamily">
+                                                <option value="Arial">Arial</option>
+                                                <option value="Verdana">Verdana</option>
+                                                <option value="Times New Roman">Times New Roman</option>
+                                                <option value="宋体">宋体</option>
+                                                <option value="微软雅黑">微软雅黑</option>
+                                                <option value="黑体">黑体</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="control-item">
+                                            <label for="fontSize">大小：</label>
+                                            <input type="number" id="fontSize" min="8" max="72" value="24">
+                                        </div>
+                                        
+                                        <div class="control-item">
+                                            <label for="fontColor">颜色：</label>
+                                            <input type="color" id="fontColor" value="#000000">
+                                            <button id="colorPickerBtn" class="style-btn" title="从图片吸取颜色">
+                                                <span class="eyedropper-icon">👁️‍🗨️</span>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="control-item">
+                                            <label>粗细：</label>
+                                            <button id="boldBtn" class="style-btn">粗体</button>
+                                        </div>
+                                        
+                                        <div class="control-item">
+                                            <label>下划线：</label>
+                                            <button id="underlineBtn" class="style-btn">下划线</button>
+                                        </div>
+                                        
+                                        <div class="control-item">
+                                            <label for="letterSpacing">间距：</label>
+                                            <input type="range" id="letterSpacing" min="0" max="20" value="0">
+                                            <span id="letterSpacingValue">0px</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button id="addTextBtn" class="primary-btn">添加文字区域</button>
+                                <button id="updateTextBtn" class="primary-btn">更新文字内容</button>
+                                <button id="cancelEditBtn" class="secondary-btn">取消编辑</button>
+                                <button id="resetEditorBtn" class="secondary-btn">重新上传</button>
+                                <button id="downloadEditedBtn" class="download-btn">下载编辑后的图片</button>
+                            </div>
+                            
+                            <div class="text-areas-list" id="textAreasList">
+                                <h3>已添加的文本区域</h3>
+                                <div id="textAreaItems"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 扫雷游戏部分 -->
+            <div id="minesweeperSection" style="display: none;">
+                <div class="game-container">
+                    <div class="game-header">
+                        <h3>3x3 扫雷游戏</h3>
+                        <p class="game-info">剩余地雷：<span id="mineCount">2</span></p>
+                    </div>
+                    <div class="game-board" id="minesweeperBoard">
+                        <!-- 游戏格子将由 JavaScript 动态生成 -->
+                    </div>
+                    <div class="game-controls">
+                        <button id="newGameBtn" class="primary-btn">新游戏</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>© 2024 图片压缩工具 - 所有权利保留</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/minesweeper.js"></script>
+    <script src="js/resize.js"></script>
+    <script src="js/editor.js"></script>
+</body>
+</html> 
