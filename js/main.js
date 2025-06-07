@@ -192,19 +192,21 @@ resetBtn.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const compressBtn = document.getElementById('compressBtn');
     const resizeBtn = document.getElementById('resizeBtn');
+    const imageEditorBtn = document.getElementById('imageEditorBtn');
     const minesweeperBtn = document.getElementById('minesweeperBtn');
     const compressSection = document.getElementById('compressSection');
     const resizeSection = document.getElementById('resizeSection');
+    const imageEditorSection = document.getElementById('imageEditorSection');
     const minesweeperSection = document.getElementById('minesweeperSection');
 
     // 导航切换函数
     function switchSection(activeBtn, activeSection) {
         // 重置所有按钮状态
-        [compressBtn, resizeBtn, minesweeperBtn].forEach(btn => {
+        [compressBtn, resizeBtn, imageEditorBtn, minesweeperBtn].forEach(btn => {
             btn.classList.remove('active');
         });
         // 重置所有区域显示状态
-        [compressSection, resizeSection, minesweeperSection].forEach(section => {
+        [compressSection, resizeSection, imageEditorSection, minesweeperSection].forEach(section => {
             section.style.display = 'none';
         });
         // 激活当前按钮和区域
@@ -219,6 +221,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resizeBtn.addEventListener('click', () => {
         switchSection(resizeBtn, resizeSection);
+    });
+
+    imageEditorBtn.addEventListener('click', () => {
+        switchSection(imageEditorBtn, imageEditorSection);
     });
 
     minesweeperBtn.addEventListener('click', () => {
